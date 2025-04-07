@@ -1,0 +1,31 @@
+Practical: Implementation of K-Means Clustering for Customer Segmentation
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+# Sample customer data: [Annual Income, Spending Score]
+data = np.array([
+    [15, 39], [16, 81], [17, 6], [18, 77], [19, 40],
+    [20, 76], [21, 6], [22, 94], [23, 3], [24, 72],
+    [25, 70], [26, 24], [27, 17], [28, 98], [29, 68]
+])
+
+# Initialize KMeans with 3 clusters
+kmeans = KMeans(n_clusters=3)
+kmeans.fit(data)
+
+# Cluster centers
+centroids = kmeans.cluster_centers_
+
+# Labels (which cluster each data point belongs to)
+labels = kmeans.labels_
+
+# Plot the data points and centroids
+plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis')
+plt.scatter(centroids[:, 0], centroids[:, 1], s=200, c='red', marker='X', label='Centroids')
+plt.title('Customer Segmentation using K-Means')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.legend()
+plt.show()
