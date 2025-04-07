@@ -1,0 +1,40 @@
+Implementing Binary Logistic Regression for Iris Species Classification
+
+#Logistics
+
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Step 1: Load dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# For binary classification (Setosa vs Not Setosa)
+y = np.where(y == 0, 1, 0)  # 1 if Setosa, 0 if Not Setosa
+
+# Step 2: Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Step 3: Train the Logistic Regression model
+model = LogisticRegression(max_iter=200)
+model.fit(X_train, y_train)
+
+# Step 4: Predict the results
+y_pred = model.predict(X_test)
+
+# Step 5: Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+class_report = classification_report(y_test, y_pred)
+
+# Display the results
+print(f"Accuracy: {accuracy * 100:.2f}%")
+print("Confusion Matrix:")
+print(conf_matrix)
+print("Classification Report:")
+print(class_report)
