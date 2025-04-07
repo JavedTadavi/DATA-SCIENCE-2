@@ -1,0 +1,33 @@
+12. Write a program to implementing with
+NLTK: Tokenization, stemming, and lemmatization
+
+
+
+
+# Import required libraries
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
+
+# Download required NLTK data (run once)
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+# Sample text
+text = "The striped bats are hanging on their feet for best"
+
+# Tokenization
+tokens = word_tokenize(text)
+print("Tokens:", tokens)
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed_words = [stemmer.stem(word) for word in tokens]
+print("Stemmed Words:", stemmed_words)
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_words = [lemmatizer.lemmatize(word) for word in tokens]
+print("Lemmatized Words:", lemmatized_words)
