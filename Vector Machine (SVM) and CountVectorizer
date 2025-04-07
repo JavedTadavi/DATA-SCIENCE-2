@@ -1,0 +1,67 @@
+Practical: Implementing Spam Detection using Support Vector Machine (SVM) and CountVectorizer
+
+
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+# Step 1: Load the Dataset
+data = {
+    'text': [
+        'Win a free iPhone now!',
+        'Your bank account has been compromised. Click here.',
+        'Meeting at 3 PM in conference room.',
+        'Congratulations! You won a $1000 gift card.',
+        'Lunch at 1 PM?',
+        'Urgent: Your credit card will be blocked if not verified.',
+        'Hey, check out this new project I’ve been working on.'
+    ],
+    'label': ['spam', 'spam', 'ham', 'spam', 'ham', 'spam', 'ham']
+}
+
+# Step 2: Convert data to DataFrame
+df = pd.DataFrame(data)
+
+# Step 3: Data Preprocessing
+# Convert labels: 'ham' → 0, 'spam' → 1
+df['label'] = df['label'].map({'ham': 0, 'spam': 1})
+
+# Convert text data to numerical format using CountVectorizer
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(df['text'])  # Feature matrix
+y = df['label']  # Target labels
+
+# Step 4: Split Data into Training and Testing Sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Step 5: Train the SVM Model
+svm_model = SVC(kernel='linear', C=1.0)  # Linear kernel for text data
+svm_model.fit(X_train, y_train)
+
+# Step 6: Model Evaluation
+y_pred = svm_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy of Spam Detection Model: {accuracy:.2f}")
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+# Step 7: Testing with New Emails
+new_emails = [
+    "Get a free vacation now!",
+    "Please submit your assignment by tomorrow.",
+    "Your PayPal account has been locked! Click here to unlock."
+]
+
+# Transform new data using the trained vectorizer
+new_emails_transformed = vectorizer.transform(new_emails)
+
+# Predict spam or ham
+predictions = svm_model.predict(new_emails_transformed)
+
+# Display Results
+print("\nNew Email Predictions:")
+for email, label in zip(new_emails, predictions):
+    print(f"Email: '{email}' → {'SPAM' if label == 1 else 'HAM'}")
